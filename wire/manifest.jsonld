@@ -50,9 +50,9 @@
     "fx.cljc": "REPORT-TIME foreign-exchange conversion (minor units → JPY-equivalent); never persisted as a Datom"
   },
   "lexicons": [
-    "com.etzhayyim.meisai.statement (cells/lex/meisai.statement.json — statement header; PERSONAL, local-only, no PAN/credential)",
-    "com.etzhayyim.meisai.source (cells/lex/meisai.source.json — coverage source; PUBLIC metadata)",
-    "com.etzhayyim.meisai.recurringHandoff (cells/lex/meisai.recurringHandoff.json — the meisai→kaiyaku recurring-charge handoff; PERSONAL, local-only)"
+    "com.etzhayyim.meisai.statement (wire/lexicons/meisai.statement.json — statement header; PERSONAL, local-only, no PAN/credential)",
+    "com.etzhayyim.meisai.source (wire/lexicons/meisai.source.json — coverage source; PUBLIC metadata)",
+    "com.etzhayyim.meisai.recurringHandoff (wire/lexicons/meisai.recurringHandoff.json — the meisai→kaiyaku recurring-charge handoff; PERSONAL, local-only)"
   ],
   "residence": "com.etzhayyim.meisai.heartbeat (50-infra/launchd/com.etzhayyim.meisai.heartbeat.plist) — a per-member launchd LaunchAgent that runs the local autorun intake sweep hourly on the MEMBER's OWN machine. NOT a shared murakumo fleet cell: meisai is member-local personal data with no network I/O (G1/G3/G7), so it must not run on shared fleet nodes.",
   "fetchLeg": {

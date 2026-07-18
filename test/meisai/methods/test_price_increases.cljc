@@ -1,6 +1,6 @@
 #!/usr/bin/env bb
 ;; meisai 明細 — tests for price-increases (stealth subscription price-hike detection).
-;; Run:  bb --classpath 20-actors 20-actors/meisai/methods/test_price_increases.cljc
+;; Run:  bb --classpath 20-actors methods/test_price_increases.cljc
 (ns meisai.methods.test-price-increases
   "Tests for price-increases — recurring charges whose amount has crept up across statements (a
   stronger kaiyaku review signal than recurring's amount-stable? flag). Read-only over the member's

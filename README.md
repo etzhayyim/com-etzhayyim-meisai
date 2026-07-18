@@ -28,7 +28,7 @@ portal the fetch leg learns to read lands through the same ingest.
 
 ```bash
 # 1. fetch (member-run, on the member's machine — see computer-use-clj README):
-#    SUMITCLUB_OUT=20-actors/meisai/data/intake/2026-05.edn \
+#    SUMITCLUB_OUT=data/intake/2026-05.edn \
 #      clojure -M:dev:examples -e "(require 'sumitclub-meisai) (sumitclub-meisai/-main)"
 
 # 2. ingest (no network, no credentials):
@@ -58,7 +58,7 @@ bb -e '(require (quote meisai.methods.sources))(meisai.methods.sources/-main)'
 
 # regenerate the public Datom log (the registry "data itself in datomic/edn", 922 datoms, committed):
 bb -e '(require (quote meisai.methods.sources))(meisai.methods.sources/-main "--emit")'
-#   → sources/world-card-issuers.kotoba.edn  (one append-only tx, deterministic CID)
+#   → generated world-card-issuers.kotoba.edn  (one append-only tx, deterministic CID)
 ```
 
 - **registry-datoms** → `:meisai.source/{id,name,kind,country,region,currency,status,portal,
@@ -134,7 +134,7 @@ Adapters live out-of-repo (member-side, G7); the 100 `:registry-only` sources ar
 
 ## Lexicons & residence (R1)
 
-- **Lexicons** (`cells/lex/`): `com.etzhayyim.meisai.{statement,source,recurringHandoff}` — document
+- **Lexicons** (`wire/lexicons/`): `com.etzhayyim.meisai.{statement,source,recurringHandoff}` — document
   the on-log / handoff shapes. `source` is PUBLIC metadata; `statement` + `recurringHandoff` are
   PERSONAL (local-only, no PAN/credential — the schemas carry no such field by construction).
 - **Residence**: `50-infra/launchd/com.etzhayyim.meisai.heartbeat.plist` — a per-member launchd
@@ -157,7 +157,7 @@ Adapters live out-of-repo (member-side, G7); the 100 `:registry-only` sources ar
 Methods + 28 green bb tests (103 assertions); live fetch verified end-to-end against local gemma 4
 QAT (mock-host loop) on 2026-06-12. Landed: the worldwide coverage registry (101 sources) +
 multi-currency normalize + the kaiyaku recurring-charge handoff (round-trip closed) + report-time
-FX + 3 lexicons (`cells/lex/`) + the member-local launchd heartbeat. The per-issuer **fetch-leg
+FX + 3 lexicons (`wire/lexicons/`) + the member-local launchd heartbeat. The per-issuer **fetch-leg
 adapters** (which flip the 100 `:registry-only` sources to `:supported`) live member-side
 (computer-use-clj, G7) and are the remaining wave. No Pregel/shared-fleet registration — and there
 won't be: meisai is member-local (G1/G3/G7), so it resides as a per-member LaunchAgent, not a fleet

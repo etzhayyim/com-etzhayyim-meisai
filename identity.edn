@@ -1,0 +1,3 @@
+{:repository/id "com-etzhayyim-meisai" :repository/type :actor
+ :actor/id :meisai :actor/did "did:web:etzhayyim.com:meisai"
+ :canonical-format :edn}

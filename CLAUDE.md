@@ -1,4 +1,4 @@
-# 20-actors/meisai — CLAUDE.md
+# com-etzhayyim-meisai — CLAUDE.md
 
 ## Identity
 
@@ -36,7 +36,7 @@ they are to violate by accident:
 ## Architecture
 
 ```
-member's machine                                 20-actors/meisai/
+member's machine
 ┌──────────────────────────────┐                 ┌──────────────────────────────┐
 │ computer-use-clj             │   statement EDN │ methods/ingest.py  (G2 guard)│
 │  sumitclub_meisai.clj        │ ──────────────▶ │ methods/autorun.py (sweep)   │
@@ -59,7 +59,7 @@ payment services (networks / issuers / PSP / BNPL / wallets) so meisai can inges
 just sumitclub. It is **public metadata** (no statement/row/credential/PAN) → it lives OUTSIDE the
 gitignored `data/` and **IS committed** (do NOT add it to `.gitignore`; that is the whole point —
 it is the one file in this actor that is meant to be public). `methods/sources.cljc` emits
-`:meisai.source/*` datoms (`sources/world-card-issuers.kotoba.edn`, a committed public Datom log),
+`:meisai.source/*` datoms (`generated world-card-issuers.kotoba.edn`, a committed public Datom log),
 an honest coverage report + worklist, `resolve`, and `normalize` (raw issuer intake → canonical;
 JPY → `:amount_jpy`, others → generic `:amount` + `:currency` in integer minor units). G2/G3 are
 unaffected: the registry parses no statement, and normalize feeds ingest where the G2 guard runs.
@@ -89,7 +89,7 @@ bb -cp 20-actors -e "(require 'meisai.methods.autorun)(meisai.methods.autorun/-m
 `sources/world-card-issuers.edn` to `:supported` (member-side, computer-use-clj, G4 read-only
 posture — out-of-repo, the seam is the registry `:shape` + `sources/normalize`).
 
-LANDED in R1: lexicons `com.etzhayyim.meisai.{statement,source,recurringHandoff}` (`cells/lex/`);
+LANDED in R1: lexicons `com.etzhayyim.meisai.{statement,source,recurringHandoff}` (`wire/lexicons/`);
 member-local launchd heartbeat (`50-infra/launchd/com.etzhayyim.meisai.heartbeat.plist` — NOT a
 shared fleet cell, by G1/G3/G7); report-time FX enrichment (`methods/fx.cljc`,
 `:handoff/jpy-equivalent`, advisory — never a `:meisai.row/*` Datom).
