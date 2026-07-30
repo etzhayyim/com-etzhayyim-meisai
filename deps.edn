@@ -3,6 +3,9 @@
  {:test {:extra-paths ["test"]
          :extra-deps {io.github.cognitect-labs/test-runner
                       {:git/tag "v0.5.1" :git/sha "dfb30dd"}}
-         :main-opts ["-m" "cognitect.test-runner"]}
+         ;; `-r` because the namespaces are `meisai.…test-<thing>`, and the runner's
+         ;; default pattern is `.*-test$`. Without it the run silently covered two
+         ;; namespaces out of nine and still reported success.
+         :main-opts ["-m" "cognitect.test-runner" "-r" "meisai\\..*"]}
   :lint {:replace-deps {clj-kondo/clj-kondo {:mvn/version "2024.11.14"}}
          :main-opts    ["-m" "clj-kondo.main" "--lint" "src" "test" "--fail-level" "error"]}}}
