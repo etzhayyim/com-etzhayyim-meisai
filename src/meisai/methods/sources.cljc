@@ -152,11 +152,29 @@
 ;; ── IO (clj only) ────────────────────────────────────────────────────────────
 #?(:clj
    (do
+     (defn- ancestor
+       "`n` levels up from `f`, or nil as soon as there is no parent left.
+       `.getParentFile` returns nil at the top and the next call reflects on nil,
+       which is an IllegalArgumentException rather than anything catchable by
+       looking at the value."
+       [f n]
+       (loop [f (when f (io/file f)) n n]
+         (if (or (nil? f) (zero? n)) f (recur (.getParentFile f) (dec n)))))
+
      (def ^:private sources-dir
-       ;; resolved at LOAD time (where *file* is the real path); reused at run time so -main
-       ;; never dereferences *file* (which is nil when invoked via apply under bb).
-       (-> (io/file *file*) .getParentFile .getParentFile .getParentFile
-           .getParentFile (io/file "sources")))
+       ;; `sources/` sits beside `src/`, so it is NOT on the classpath and has to be
+       ;; found on disk. `*file*` is only an absolute path when this namespace is
+       ;; load-file'd; under a normal `require` off `:paths ["src"]` it is the
+       ;; classpath-relative `meisai/methods/sources.cljc`, which runs out of parents
+       ;; after three — and the fourth `.getParentFile` threw at load time, so every
+       ;; namespace requiring this one failed to compile at all. That is why the test
+       ;; suite only ever ran `murakumo-test` and `repository-contract-test`: the five
+       ;; `methods/` test namespaces could not load, and a suite that cannot load a
+       ;; namespace reports no failures rather than reporting that.
+       (or (some-> (System/getenv "MEISAI_SOURCES_DIR") not-empty io/file)
+           (let [d (ancestor *file* 4)]
+             (when (and d (.isDirectory (io/file d "sources"))) (io/file d "sources")))
+           (io/file "sources")))
 
      (def registry-default (str (io/file sources-dir "world-card-issuers.edn")))
      (def kotoba-log-default (str (io/file sources-dir "world-card-issuers.kotoba.edn")))
